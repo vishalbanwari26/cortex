@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cortex-orchestrator"
+version = "0.1.0"
+description = "A cognitive-loop orchestrator for embodied agents: perceive (VLM) -> plan -> orchestrate sub-agents -> adapt, with real-time event streaming."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Vishal Banwari" }]
+keywords = ["agents", "orchestration", "embodied-ai", "llm", "vlm", "task-planning"]
+dependencies = []
+
+[project.optional-dependencies]
+live = ["anthropic>=0.39"]
+groq = ["groq>=0.11"]
+assets = ["pillow>=10"]
+dev = ["pytest>=8.0"]
+
+[project.scripts]
+cortex = "cortex.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["cortex*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

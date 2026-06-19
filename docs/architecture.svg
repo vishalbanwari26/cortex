@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 1000" width="1680" height="1000">
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#9aa3b2"/></marker><marker id="arrowR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#d29922"/></marker></defs>
+<rect width="1680" height="1000" fill="#0f1117"/>
+<text x="60" y="70" font-family="DejaVu Sans, Helvetica, Arial, sans-serif" font-size="38" font-weight="800" fill="#e6e9ef">Cortex</text>
+<text x="205" y="70" font-family="DejaVu Sans, Helvetica, Arial, sans-serif" font-size="24" fill="#9aa3b2">cognitive-loop orchestrator for embodied agents</text>
+<text x="60" y="104" font-family="DejaVu Sans Mono, monospace" font-size="20" fill="#56d4dd">perceive &#8594; plan &#8594; act &#8594; adapt</text>
+<rect x="300" y="150" width="940" height="52" rx="12" fill="#141821" stroke="#2b2f3d" stroke-width="1.5"/>
+<circle cx="336" cy="176" r="6" fill="#3fb950"/>
+<text x="360" y="183" font-family="DejaVu Sans, Helvetica, Arial, sans-serif" font-size="20" font-weight="600" fill="#9aa3b2" text-anchor="start">Event stream  ·  real-time feedback emitted at every stage</text>
+<rect x="60" y="300" width="200" height="92" rx="46.0" fill="#1a1d27" stroke="#c9d1d9" stroke-width="1.5"/>
+<text x="160.0" y="353.0" font-family="DejaVu Sans, Helvetica, Arial, sans-serif" font-size="20" font-weight="600" fill="#e6e9ef" text-anchor="middle">Goal + image</text>
+<rect x="320" y="280" width="260" height="132" rx="16" fill="#1a1d27" stroke="#2b2f3d" stroke-width="1.5"/>
+<rect x="320" y="280" width="6" height="132" rx="3" fill="#56d4dd"/>
+<text x="346" y="324" font-family="DejaVu Sans, Helvetica, Arial, sans-serif" font-size="27" font-weight="700" fill="#e6e9ef">Perception</text>
+<text x="346" y="358" font-family="DejaVu Sans Mono, monospace" font-size="18" fill="#9aa3b2">image → VLM</text>
+<text x="346" y="384" font-family="DejaVu Sans Mono, monospace" font-size="18" fill="#9aa3b2">→ structured Scene</text>
+<rect x="640" y="280" width="260" height="132" rx="16" fill="#1a1d27" stroke="#2b2f3d" stroke-width="1.5"/>
+<rect x="640" y="280" width="6" height="132" rx="3" fill="#79c0ff"/>
+<text x="666" y="324" font-family="DejaVu Sans, Helvetica, Arial, sans-serif" font-size="27" font-weight="700" fill="#e6e9ef">Planner</text>
+<text x="666" y="358" font-family="DejaVu Sans Mono, monospace" font-size="18" fill="#9aa3b2">goal + scene</text>
+<text x="666" y="384" font-family="DejaVu Sans Mono, monospace" font-size="18" fill="#9aa3b2">→ ordered steps</text>
+<rect x="960" y="280" width="260" height="132" rx="16" fill="#1a1d27" stroke="#2b2f3d" stroke-width="1.5"/>
+<rect x="960" y="280" width="6" height="132" rx="3" fill="#d2a8ff"/>
+<text x="986" y="324" font-family="DejaVu Sans, Helvetica, Arial, sans-serif" font-size="27" font-weight="700" fill="#e6e9ef">Actor</text>
+<text x="986" y="358" font-family="DejaVu Sans Mono, monospace" font-size="18" fill="#9aa3b2">dispatch skill</text>
+<text x="986" y="384" font-family="DejaVu Sans Mono, monospace" font-size="18" fill="#9aa3b2">→ run on WorldState</text>
+<rect x="1300" y="302" width="150" height="88" rx="44.0" fill="#1a1d27" stroke="#3fb950" stroke-width="1.5"/>
+<text x="1375.0" y="353.0" font-family="DejaVu Sans, Helvetica, Arial, sans-serif" font-size="20" font-weight="600" fill="#e6e9ef" text-anchor="middle">Done</text>
+<line x1="260" y1="346" x2="318" y2="346" stroke="#9aa3b2" stroke-width="2.2" marker-end="url(#arrow)"/>
+<line x1="580" y1="346" x2="638" y2="346" stroke="#9aa3b2" stroke-width="2.2" marker-end="url(#arrow)"/>
+<line x1="900" y1="346" x2="958" y2="346" stroke="#9aa3b2" stroke-width="2.2" marker-end="url(#arrow)"/>
+<line x1="1220" y1="346" x2="1298" y2="346" stroke="#3fb950" stroke-width="2.2" marker-end="url(#arrow)"/>
+<text x="1259" y="330" font-family="DejaVu Sans, Helvetica, Arial, sans-serif" font-size="16" font-weight="600" fill="#3fb950" text-anchor="middle">all steps ok</text>
+<line x1="450" y1="202" x2="450" y2="280" stroke="#2b2f3d" stroke-width="1.5" stroke-dasharray="3,5"/>
+<line x1="770" y1="202" x2="770" y2="280" stroke="#2b2f3d" stroke-width="1.5" stroke-dasharray="3,5"/>
+<line x1="1090" y1="202" x2="1090" y2="280" stroke="#2b2f3d" stroke-width="1.5" stroke-dasharray="3,5"/>
+<rect x="960" y="480" width="260" height="96" rx="16" fill="#1a1d27" stroke="#2b2f3d" stroke-width="1.5"/>
+<rect x="960" y="480" width="6" height="96" rx="3" fill="#8b949e"/>
+<text x="986" y="524" font-family="DejaVu Sans, Helvetica, Arial, sans-serif" font-size="27" font-weight="700" fill="#e6e9ef">WorldState</text>
+<text x="986" y="558" font-family="DejaVu Sans Mono, monospace" font-size="18" fill="#9aa3b2">robot pose · held obj</text>
+<line x1="1090" y1="412" x2="1090" y2="480" stroke="#9aa3b2" stroke-width="2.2" marker-end="url(#arrow)"/>
+<text x="960" y="620" font-family="DejaVu Sans, Helvetica, Arial, sans-serif" font-size="18" font-weight="700" fill="#9aa3b2" text-anchor="start">Skill registry</text>
+<rect x="960" y="632" width="132" height="38" rx="19" fill="#141821" stroke="#d2a8ff" stroke-width="1.3"/>
+<text x="1026.0" y="657" font-family="DejaVu Sans Mono, monospace" font-size="17" fill="#e6e9ef" text-anchor="middle">navigate</text>
+<rect x="1108" y="632" width="96" height="38" rx="19" fill="#141821" stroke="#d2a8ff" stroke-width="1.3"/>
+<text x="1156.0" y="657" font-family="DejaVu Sans Mono, monospace" font-size="17" fill="#e6e9ef" text-anchor="middle">grasp</text>
+<rect x="1220" y="632" width="96" height="38" rx="19" fill="#141821" stroke="#d2a8ff" stroke-width="1.3"/>
+<text x="1268.0" y="657" font-family="DejaVu Sans Mono, monospace" font-size="17" fill="#e6e9ef" text-anchor="middle">place</text>
+<rect x="1332" y="632" width="84" height="38" rx="19" fill="#141821" stroke="#d2a8ff" stroke-width="1.3"/>
+<text x="1374.0" y="657" font-family="DejaVu Sans Mono, monospace" font-size="17" fill="#e6e9ef" text-anchor="middle">scan</text>
+<rect x="640" y="500" width="260" height="120" rx="16" fill="#1a1d27" stroke="#2b2f3d" stroke-width="1.5"/>
+<rect x="640" y="500" width="6" height="120" rx="3" fill="#d29922"/>
+<text x="666" y="544" font-family="DejaVu Sans, Helvetica, Arial, sans-serif" font-size="27" font-weight="700" fill="#e6e9ef">Critic</text>
+<text x="666" y="578" font-family="DejaVu Sans Mono, monospace" font-size="18" fill="#9aa3b2">assess failure</text>
+<text x="666" y="604" font-family="DejaVu Sans Mono, monospace" font-size="18" fill="#9aa3b2">→ replan / abort</text>
+<line x1="990" y1="412" x2="830" y2="500" stroke="#f85149" stroke-width="2.2" marker-end="url(#arrow)"/>
+<text x="905" y="468" font-family="DejaVu Sans, Helvetica, Arial, sans-serif" font-size="17" font-weight="600" fill="#f85149" text-anchor="middle">step fails</text>
+<line x1="770" y1="500" x2="770" y2="412" stroke="#d29922" stroke-width="2.2" marker-end="url(#arrowR)"/>
+<text x="690" y="468" font-family="DejaVu Sans, Helvetica, Arial, sans-serif" font-size="17" font-weight="600" fill="#d29922" text-anchor="end">replan</text>
+<line x1="640" y1="560" x2="540" y2="560" stroke="#f85149" stroke-width="2.2" marker-end="url(#arrow)"/>
+<text x="500" y="565" font-family="DejaVu Sans, Helvetica, Arial, sans-serif" font-size="16" font-weight="600" fill="#f85149" text-anchor="end">abort</text>
+<rect x="320" y="800" width="900" height="120" rx="16" fill="#12151d" stroke="#2b2f3d" stroke-width="1.5"/>
+<text x="346" y="842" font-family="DejaVu Sans, Helvetica, Arial, sans-serif" font-size="24" font-weight="700" fill="#e6e9ef">LLMClient interface</text>
+<text x="346" y="872" font-family="DejaVu Sans Mono, monospace" font-size="18" fill="#9aa3b2">provider-agnostic core</text>
+<rect x="745" y="830" width="200" height="56" rx="28.0" fill="#141821" stroke="#56d4dd" stroke-width="1.5"/>
+<text x="845.0" y="865.0" font-family="DejaVu Sans, Helvetica, Arial, sans-serif" font-size="20" font-weight="600" fill="#e6e9ef" text-anchor="middle">Anthropic · VLM</text>
+<rect x="960" y="830" width="235" height="56" rx="28.0" fill="#141821" stroke="#3fb950" stroke-width="1.5"/>
+<text x="1077.5" y="865.0" font-family="DejaVu Sans, Helvetica, Arial, sans-serif" font-size="20" font-weight="600" fill="#e6e9ef" text-anchor="middle">Groq · gpt-oss-120b</text>
+<text x="770" y="784" font-family="DejaVu Sans, Helvetica, Arial, sans-serif" font-size="17" font-weight="500" fill="#9aa3b2" text-anchor="middle">used by Perception (VLM), Planner, and Critic</text>
+</svg>

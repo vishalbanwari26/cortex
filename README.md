@@ -1,0 +1,166 @@
+# Cortex
+
+A cognitive-loop orchestrator for embodied agents. It takes a natural-language
+goal and a scene, perceives the scene with a vision-language model, plans a
+multi-step task, dispatches each step to modular sub-agents and skills, and
+adapts in real time when a step fails. Every stage streams as an event, so the
+agent's reasoning and action are observable as they happen.
+
+The orchestration layer is provider-agnostic: it depends on an `LLMClient`
+interface, not a vendor SDK, so the same loop runs against a hosted model in the
+cloud or a smaller model at the edge.
+
+![Cortex architecture](docs/architecture.png)
+
+## The cognitive loop
+
+```mermaid
+flowchart LR
+    G[Goal + image] --> P[Perception agent<br/>VLM]
+    P --> S[Scene]
+    S --> PL[Planner agent]
+    PL --> EX[Actor: execute step<br/>via skill registry]
+    EX -->|ok| EX
+    EX -->|step fails| CR[Critic agent]
+    CR -->|replan| PL
+    CR -->|abort| F[Failed]
+    EX -->|all steps ok| D[Done]
+```
+
+- **Perception agent** turns a multimodal input into a structured `Scene`.
+- **Planner agent** decomposes the goal into an ordered plan bound to available skills.
+- **Actor** executes each step against a mutable `WorldState` through the skill registry.
+- **Critic agent** inspects failures and decides whether to replan or abort.
+- **Orchestrator** sequences all of it and emits real-time events. It is small on
+  purpose: the intelligence lives in the agents, the loop just coordinates them.
+
+## Run it
+
+No API key needed for the offline demo (it uses a deterministic mock model):
+
+```bash
+pip install -e .
+python -m cortex.cli "Put the red mug in the cupboard."
+```
+
+Sample output:
+
+```
+ [plan] 1. grasp red mug | 2. place cupboard
+   [>>] [grasp] grasp -> red mug
+  [err] 'red mug' is at table but the robot is at dock; out of reach.
+    [!] Grasp failed because the robot was not at the object's location.
+    [~] Replanning (attempt 1)...
+ [plan] 1. navigate table | 2. grasp red mug | 3. place cupboard
+   ...
+ [done] Goal achieved.
+```
+
+The first plan is deliberately incomplete. The grasp fails, the critic catches
+why, and the replanned plan navigates first and succeeds. That is the adaptive
+loop, not a happy path.
+
+![Cortex demo — offline adaptive loop](docs/demo.gif)
+
+The first plan is intentionally incomplete. The grasp fails because the robot
+is not co-located with the mug. The critic catches why, replans with a
+navigate step prepended, and the goal is met. That is the adaptive loop, not a
+happy path.
+
+### With GPT-OSS 120B on Groq (text)
+
+GPT-OSS 120B is a text-only reasoning model. It drives planning, critique, and
+perception from a text scene description. This is the clearest demonstration
+that the orchestrator is provider-agnostic: nothing in the loop changes, only
+the client behind the `LLMClient` interface.
+
+```bash
+pip install -e ".[groq]"
+export GROQ_API_KEY=gsk_...
+python -m cortex.cli "Put the red mug in the cupboard." --provider groq \
+  --note "A kitchen table holds a red mug and a dirty plate; a cupboard is on the wall."
+```
+
+![Cortex live run — Groq gpt-oss-120b](docs/demo-groq.gif)
+
+### With Llama 4 Scout on Groq (vision)
+
+Llama 4 Scout is a multimodal model available on Groq. It handles both the
+vision perception step (reading the actual image) and the text planner/critic
+steps, giving a fully-Groq pipeline with no Anthropic key required.
+
+```bash
+pip install -e ".[groq]"
+export GROQ_API_KEY=gsk_...
+python -m cortex.cli "Put the red mug in the cupboard." --provider groq-vision \
+  --image examples/scene.jpg
+```
+
+![Cortex live run — Groq Llama 4 Scout vision](docs/demo-groq-vision.gif)
+
+### With a real VLM (Anthropic)
+
+```bash
+pip install -e ".[live]"
+export ANTHROPIC_API_KEY=sk-ant-...
+python -m cortex.cli "Tidy the table." --live --image examples/scene.jpg
+```
+
+The perception agent reads the actual image and the planner reasons over what
+it sees.
+
+### Capture portfolio assets from a run
+
+`cortex.capture` runs the loop and writes a styled terminal still, an animated
+GIF, and a transcript, no screen recording needed. The caption reflects what
+produced it: a live provider is labeled `live run | <provider> | <model>`, the
+offline mock is labeled `offline deterministic demo`.
+
+```bash
+pip install -e ".[assets]"
+# offline (shows the adaptive replan loop):
+python -m cortex.capture "Put the red mug in the cupboard." --out out
+# live on Groq gpt-oss-120b (text):
+python -m cortex.capture "Put the red mug in the cupboard." --provider groq \
+  --note "A table with a red mug and a dirty plate; a cupboard on the wall." --out out
+# live on Groq Llama 4 Scout (vision):
+python -m cortex.capture "Put the red mug in the cupboard." --provider groq-vision \
+  --image examples/scene.jpg --out out
+# live on Anthropic VLM:
+python -m cortex.capture "Tidy the table." --provider anthropic --image examples/scene.jpg --out out
+```
+
+## Tests
+
+```bash
+pip install -e ".[dev]"
+pytest -q
+```
+
+The suite runs entirely on the mock client, so it is fast and deterministic. The
+headline test asserts the recovery path: plan fails, critic replans, goal is met.
+
+## Design notes
+
+- **Provider-agnostic core.** Agents call `LLMClient.complete(...)`, never an SDK.
+  Cloud and edge are concrete clients behind the same interface.
+- **Skills as a registry.** Capabilities (`navigate`, `grasp`, `place`, `scan`)
+  register themselves and are discovered by name. New skills plug in without
+  touching the orchestrator or planner.
+- **State with consequences.** Skills read and mutate a `WorldState`, so later
+  steps reason over the results of earlier ones, and failures are real
+  (`grasp` only works when the robot is co-located with the target).
+- **Bounded adaptation.** The replan loop is capped (`max_replans`) so a
+  pathological scene cannot spin forever.
+
+## What this is, and what it is not
+
+This is a sandbox. The skills are simulated, not connected to a real robot. The
+point is the orchestration architecture: the perception-to-planning-to-action
+loop, the modular sub-agent interface, real-time feedback, and failure-driven
+replanning. Swapping the simulated skills for a robot SDK or a ROS bridge would
+not change the orchestrator or the agents, which is the property worth showing.
+
+## License
+
+MIT
