@@ -19,8 +19,8 @@ perceives the mug on the table, plans to pick it up and store it, and on the
 first failed grasp it replans to navigate first. Before and after:
 
 <p align="center">
-  <img src="docs/scene_before.png" width="49%" alt="Before: the red mug sits on the table" />
-  <img src="docs/scene_after.png" width="49%" alt="After: the red mug is stored on the cupboard shelf" />
+  <img src="docs/scene-before.png" width="49%" alt="Before: the red mug sits on the table" />
+  <img src="docs/scene-after.png" width="49%" alt="After: the red mug is stored on the cupboard shelf" />
 </p>
 
 The skills are simulated, so these illustrate the start and goal states the loop
