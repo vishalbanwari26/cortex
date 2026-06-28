@@ -10,6 +10,22 @@ The orchestration layer is provider-agnostic: it depends on an `LLMClient`
 interface, not a vendor SDK, so the same loop runs against a hosted model in the
 cloud or a smaller model at the edge.
 
+![Cortex architecture](docs/architecture.png)
+
+## The task
+
+A concrete run: the goal is "put the red mug in the cupboard." The agent
+perceives the mug on the table, plans to pick it up and store it, and on the
+first failed grasp it replans to navigate first. Before and after:
+
+<p align="center">
+  <img src="docs/scene_before.png" width="49%" alt="Before: the red mug sits on the table" />
+  <img src="docs/scene_after.png" width="49%" alt="After: the red mug is stored on the cupboard shelf" />
+</p>
+
+The skills are simulated, so these illustrate the start and goal states the loop
+reasons over rather than rendered robot output.
+
 ## The cognitive loop
 
 ```mermaid
@@ -57,6 +73,8 @@ Sample output:
 The first plan is deliberately incomplete. The grasp fails, the critic catches
 why, and the replanned plan navigates first and succeeds. That is the adaptive
 loop, not a happy path.
+
+![Cortex demo run](docs/demo.gif)
 
 ### With a real VLM
 
