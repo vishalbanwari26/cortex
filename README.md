@@ -10,8 +10,6 @@ The orchestration layer is provider-agnostic: it depends on an `LLMClient`
 interface, not a vendor SDK, so the same loop runs against a hosted model in the
 cloud or a smaller model at the edge.
 
-![Cortex architecture](docs/architecture.png)
-
 ## The cognitive loop
 
 ```mermaid
@@ -60,45 +58,7 @@ The first plan is deliberately incomplete. The grasp fails, the critic catches
 why, and the replanned plan navigates first and succeeds. That is the adaptive
 loop, not a happy path.
 
-![Cortex demo — offline adaptive loop](docs/demo.gif)
-
-The first plan is intentionally incomplete. The grasp fails because the robot
-is not co-located with the mug. The critic catches why, replans with a
-navigate step prepended, and the goal is met. That is the adaptive loop, not a
-happy path.
-
-### With GPT-OSS 120B on Groq (text)
-
-GPT-OSS 120B is a text-only reasoning model. It drives planning, critique, and
-perception from a text scene description. This is the clearest demonstration
-that the orchestrator is provider-agnostic: nothing in the loop changes, only
-the client behind the `LLMClient` interface.
-
-```bash
-pip install -e ".[groq]"
-export GROQ_API_KEY=gsk_...
-python -m cortex.cli "Put the red mug in the cupboard." --provider groq \
-  --note "A kitchen table holds a red mug and a dirty plate; a cupboard is on the wall."
-```
-
-![Cortex live run — Groq gpt-oss-120b](docs/demo-groq.gif)
-
-### With Llama 4 Scout on Groq (vision)
-
-Llama 4 Scout is a multimodal model available on Groq. It handles both the
-vision perception step (reading the actual image) and the text planner/critic
-steps, giving a fully-Groq pipeline with no Anthropic key required.
-
-```bash
-pip install -e ".[groq]"
-export GROQ_API_KEY=gsk_...
-python -m cortex.cli "Put the red mug in the cupboard." --provider groq-vision \
-  --image examples/scene.jpg
-```
-
-![Cortex live run — Groq Llama 4 Scout vision](docs/demo-groq-vision.gif)
-
-### With a real VLM (Anthropic)
+### With a real VLM
 
 ```bash
 pip install -e ".[live]"
@@ -106,29 +66,8 @@ export ANTHROPIC_API_KEY=sk-ant-...
 python -m cortex.cli "Tidy the table." --live --image examples/scene.jpg
 ```
 
-The perception agent reads the actual image and the planner reasons over what
-it sees.
-
-### Capture portfolio assets from a run
-
-`cortex.capture` runs the loop and writes a styled terminal still, an animated
-GIF, and a transcript, no screen recording needed. The caption reflects what
-produced it: a live provider is labeled `live run | <provider> | <model>`, the
-offline mock is labeled `offline deterministic demo`.
-
-```bash
-pip install -e ".[assets]"
-# offline (shows the adaptive replan loop):
-python -m cortex.capture "Put the red mug in the cupboard." --out out
-# live on Groq gpt-oss-120b (text):
-python -m cortex.capture "Put the red mug in the cupboard." --provider groq \
-  --note "A table with a red mug and a dirty plate; a cupboard on the wall." --out out
-# live on Groq Llama 4 Scout (vision):
-python -m cortex.capture "Put the red mug in the cupboard." --provider groq-vision \
-  --image examples/scene.jpg --out out
-# live on Anthropic VLM:
-python -m cortex.capture "Tidy the table." --provider anthropic --image examples/scene.jpg --out out
-```
+The perception agent then reads the actual image and the planner reasons over
+what it sees.
 
 ## Tests
 

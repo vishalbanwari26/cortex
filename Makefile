@@ -18,7 +18,3 @@ live:
 clean:
 	rm -rf build dist *.egg-info .pytest_cache
 	find . -type d -name __pycache__ -exec rm -rf {} +
-
-groq:
-	python -m cortex.cli "Put the red mug in the cupboard." --provider groq \
-		--note "A kitchen table holds a red mug and a dirty plate; a cupboard is on the wall."

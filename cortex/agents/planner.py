@@ -41,13 +41,8 @@ scene, the available skills, and (on a retry) feedback from a failed attempt,
 produce a short ordered plan. Each step must use exactly one available skill.
 Respond with ONLY JSON:
 {"steps": [{"id": int, "action": str, "target": str, "skill": str, "rationale": str}]}
-
-Rules:
-- The robot can only grasp an object when it is at that object's location, so
-  insert a `navigate` step to the object's location before any `grasp`.
-- Use location names exactly as they appear in the scene objects, verbatim.
-- Account for the robot's current location and what it is holding.
-- Prefer the fewest steps that reliably achieve the goal."""
+Prefer the fewest steps that reliably achieve the goal. Account for the robot's
+current location and what it is holding."""
 
 
 class PlannerAgent(Agent):

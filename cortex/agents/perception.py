@@ -17,9 +17,7 @@ You are the perception module of an embodied agent. Given an image of a scene
 (and any text note), identify the objects relevant to manipulation, their
 location, and their state. Respond with ONLY a JSON object:
 {"summary": str, "objects": [{"name": str, "location": str, "state": str}]}
-Use short, concrete object names and short location labels (for example
-"table", "counter", "shelf"), and reuse the same label for objects in the same
-place. Do not add commentary."""
+Keep names short and concrete. Do not add commentary."""
 
 
 class PerceptionAgent(Agent):

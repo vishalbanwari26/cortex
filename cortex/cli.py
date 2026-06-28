@@ -49,39 +49,21 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Run the Cortex cognitive loop.")
     parser.add_argument("goal", nargs="?", default="Put the red mug in the cupboard.",
                         help="Natural-language goal for the agent.")
-    parser.add_argument("--note", default="", help="Text description of the scene (used by text-only providers).")
-    parser.add_argument("--image", default=None, help="Path to a scene image (vision providers only).")
-    parser.add_argument("--provider", choices=["mock", "anthropic", "groq", "groq-vision"], default="mock",
-                        help="Which LLM client to use. Default: mock (offline, no key).")
-    parser.add_argument("--live", action="store_true", help="Alias for --provider anthropic.")
-    parser.add_argument("--model", default=None, help="Override the provider's default model.")
+    parser.add_argument("--note", default="", help="Optional text note about the scene.")
+    parser.add_argument("--image", default=None, help="Path to a scene image (requires --live).")
+    parser.add_argument("--live", action="store_true",
+                        help="Use the real Anthropic VLM instead of the offline mock.")
+    parser.add_argument("--model", default="claude-sonnet-4-6")
     args = parser.parse_args(argv)
 
-    provider = "anthropic" if args.live else args.provider
-    image = None
-
-    if provider == "anthropic":
+    if args.live:
         from .llm.anthropic_client import AnthropicClient
 
-        llm = AnthropicClient(model=args.model or "claude-sonnet-4-6")
-        image = _load_image(args.image) if args.image else None
-    elif provider == "groq-vision":
-        from .llm.groq_vision_client import GroqVisionClient
-
-        llm = GroqVisionClient(model=args.model or "meta-llama/llama-4-scout-17b-16e-instruct")
-        image = _load_image(args.image) if args.image else None
-    elif provider == "groq":
-        from .llm.groq_client import GroqClient
-
-        llm = GroqClient(model=args.model or "openai/gpt-oss-120b")
-        if args.image:
-            print("note: gpt-oss-120b is text-only; ignoring --image. Describe the scene with --note.\n")
-        if not args.note:
-            print("tip: text-only providers perceive from --note; pass one for a grounded scene.\n")
+        llm = AnthropicClient(model=args.model)
     else:
         llm = MockClient()
-        if args.image:
-            print("note: --image is only used with a vision provider; the mock ignores it.\n")
+
+    image = _load_image(args.image) if args.image else None
 
     orch = Orchestrator(llm)
     orch.bus.subscribe(_printer)

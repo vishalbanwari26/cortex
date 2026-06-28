@@ -13,18 +13,6 @@ from ..scene import WorldState
 from .registry import Skill, SkillRegistry, SkillResult
 
 
-def _same_place(a: str, b: str) -> bool:
-    """Tolerant location match.
-
-    A real VLM emits free text ("on the wooden table", "kitchen counter"), so
-    exact equality is too strict. Normalize and allow containment either way.
-    """
-    a, b = a.lower().strip(), b.lower().strip()
-    if not a or not b:
-        return False
-    return a == b or a in b or b in a
-
-
 def _navigate(target: str, world: WorldState) -> SkillResult:
     world.robot_location = target
     world.log(f"navigated to {target}")
@@ -35,7 +23,7 @@ def _grasp(target: str, world: WorldState) -> SkillResult:
     obj = world.scene.object_named(target) if world.scene else None
     if obj is None:
         return SkillResult(ok=False, observation=f"No object matching '{target}' in scene.")
-    if not _same_place(world.robot_location, obj.location):
+    if world.robot_location != obj.location:
         return SkillResult(
             ok=False,
             observation=(

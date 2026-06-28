@@ -15,8 +15,6 @@ dependencies = []
 
 [project.optional-dependencies]
 live = ["anthropic>=0.39"]
-groq = ["groq>=0.11"]
-assets = ["pillow>=10"]
 dev = ["pytest>=8.0"]
 
 [project.scripts]
